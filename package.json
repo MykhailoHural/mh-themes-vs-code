@@ -1,0 +1,66 @@
+{
+  "name": "mh-themes",
+  "displayName": "MH Themes",
+  "description": "Five dark themes and one light theme with a shared, calm syntax palette for JS/TS and Playwright code",
+  "publisher": "mykhailohural",
+  "version": "2.0.0",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Themes"
+  ],
+  "contributes": {
+    "themes": [
+      {
+        "label": "MH Dusk",
+        "uiTheme": "vs-dark",
+        "path": "./themes/dusk.json"
+      },
+      {
+        "label": "MH Graphite",
+        "uiTheme": "vs-dark",
+        "path": "./themes/graphite.json"
+      },
+      {
+        "label": "MH Midnight",
+        "uiTheme": "vs-dark",
+        "path": "./themes/midnight.json"
+      },
+      {
+        "label": "MH Steel",
+        "uiTheme": "vs-dark",
+        "path": "./themes/steel.json"
+      },
+      {
+        "label": "MH Sunlight",
+        "uiTheme": "vs",
+        "path": "./themes/light.json"
+      }
+    ]
+  },
+  "scripts": {
+    "build": "python3 build.py",
+    "package": "npx --yes @vscode/vsce package -o /tmp/mh-themes.vsix",
+    "install-theme": "python3 build.py && npx --yes @vscode/vsce package -o /tmp/mh-themes.vsix && code --install-extension /tmp/mh-themes.vsix --force"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MykhailoHural/mh-themes-vs-code.git"
+  },
+  "homepage": "https://github.com/MykhailoHural/mh-themes-vs-code",
+  "bugs": {
+    "url": "https://github.com/MykhailoHural/mh-themes-vs-code/issues"
+  },
+  "keywords": [
+    "theme",
+    "color-theme",
+    "dark",
+    "light",
+    "typescript",
+    "javascript",
+    "playwright"
+  ],
+  "author": "Mykhailo Hural"
+}
