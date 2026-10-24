@@ -19,10 +19,10 @@ PALETTES = {
     ),
 }
 
-# MH Steel: soft grey background with steel variables (MH Midnight: deeper background, lighter variables)
+# MH Steel: neutral near-black background with steel variables (MH Midnight: deeper background, lighter variables)
 PALETTES["steel"] = {**PALETTES["midnight"],
-    "bg": "#22272e", "bg_alt": "#22272e", "line_hl": "#2d333b", "border": "#373e47",
-    "local": "#9db9d6", "line_no": "#98a2ae",
+    "bg": "#1e1e1e", "bg_alt": "#1e1e1e", "line_hl": "#2a2a2a", "border": "#3c3c3c",
+    "local": "#9db9d6", "line_no": "#9a9a9a",
 }
 
 # status colors: contrast >= 4.5:1 on every surface
@@ -33,15 +33,17 @@ for _n, _p in PALETTES.items():
     _p.setdefault("modified", "#895503" if _light else "#e2c08d")   # warm, matches VS Code's default for changed files
     _p.setdefault("added", "#1a7f37" if _light else "#7ee787")
 
-NAMES = {"light": "MH Sunlight", "steel": "MH Steel", "midnight": "MH Midnight", "graphite": "MH Graphite", "dusk": "MH Dusk"}
+NAMES = {"light": "MH Sunlight", "steel": "MH Steel", "midnight": "MH Midnight", "graphite": "MH Graphite", "aurora": "MH Aurora",
+         "porcelain": "MH Porcelain"}
 
 # MH Graphite: reference palette, separate roles for functions, methods and regexes
 PALETTES["graphite"] = {**PALETTES["midnight"],
     "bg": "#20252d", "bg_alt": "#20252d", "line_hl": "#2a303a", "border": "#363d49",
     "text": "#d5dce5", "muted": "#9aa5b8", "accent": "#7fa6d9", "selection": "#7fa6d933",
     "button": "#2f7d6b",     # filled buttons and badges: dark mint, white label
+    "focus": "#2f7d6b",      # focus ring: same dark mint as the buttons
     "added": "#5cc0a6",      # new/untracked files: same mint, lightened to 4.5:1 as text
-    "modified": "#d8b77a",   # changed files: saturated sand, distinct from the pale property color
+    "modified": "#c9a0dc",   # changed files: soft lavender, echoes the number/boolean violet
     "line_no": "#92a0b5",
     "keyword": "#ff9b75",
     "function": "#82afff",   # function declarations and calls: expect(), expectedDatePattern()
@@ -55,12 +57,28 @@ PALETTES["graphite"] = {**PALETTES["midnight"],
 }
 
 
-# MH Dusk: Graphite palette on a deep blue slate; ice variables, sandy properties (.heading, object keys)
-PALETTES["dusk"] = {**PALETTES["graphite"],
-    "bg": "#1b2230", "bg_alt": "#1b2230", "line_hl": "#252d3d", "border": "#303a4d", "line_no": "#97a5bd",
-    "local": "#c6dcf2", "param": "#c6dcf2",
-    "property": "#d9ceb2",
+# MH Aurora: Graphite UI on deep blue slate; kept: green strings, violet numbers, comments; the rest is a fresh syntax palette
+PALETTES["aurora"] = {**PALETTES["graphite"],
+    "regex_symbols": True,   # ^ $ ( ) [ ] | in regexes take the regex color (Aurora only)
+    **{k: PALETTES["midnight"][k] for k in ("bg", "bg_alt", "line_hl", "border", "line_no")},   # same surfaces as MH Midnight
+    "this": "#ff5c5c",        # red: this
+    "string": "#5cc0a6", "number": "#8fe3f0", "boolean": "#8fe3f0",   # strings: mint, same as new files in git
+    "keyword": "#c5a0ff",    # lavender, italic: import, class, this, const, return
+    "function": "#4d9bff", "builtin": "#4d9bff",   # one blue for functions, methods, types
+    "method": "#4d9bff",     # .round(), .add(), .push() share the type blue
+    "type_": "#4d9bff", "nullish": "#4d9bff",      # saturated blue: class names, types, null, undefined
+    "local": "#f4f6fa", "param": "#f4f6fa",        # white: variables and parameters
+    "property": "#ffad85",   # peach: .name, object keys
 }
+
+# Aurora variants: same background, strings, numbers and comments; different character of the other roles
+def _variant(keyword, function, method, type_, prop, local):
+    surfaces = {k: PALETTES["midnight"][k] for k in ("bg", "bg_alt", "line_hl", "border", "line_no")}   # same surfaces as MH Midnight
+    return {**PALETTES["aurora"], **surfaces, "keyword": keyword, "function": function, "builtin": function, "method": method,
+            "type_": type_, "nullish": type_, "property": prop, "local": local, "param": local}
+
+
+PALETTES["porcelain"] = _variant("#f0a8c0", "#8fb0f0", "#6fd0c0", "#e8c070", "#f0a080", "#e4e7ed")
 
 def _lum(h):
     h = h.lstrip("#")[:6]
@@ -84,6 +102,7 @@ def theme(name, p):
     dark = p["type"] == "dark"
     link = p.get("link", p["accent"])
     btn = p.get("button", p["accent"])
+    focus = p.get("focus", link)                          # focus ring: needs >= 3:1 against the surfaces it outlines
     btn_fg = on(btn, p["bg"], "#ffffff")
     # hover moves away from the label color so the label keeps its contrast
     btn_hover = mix(btn, "#000000" if btn_fg == "#ffffff" else "#ffffff", 0.12)
@@ -110,7 +129,7 @@ def theme(name, p):
             "statusBar.background": p["bg_alt"], "statusBar.foreground": p["text"], "statusBar.border": p["border"],
             "panel.background": p["bg_alt"], "panel.border": p["border"],
             "terminal.background": p["bg"], "terminal.foreground": p["text"],
-            "focusBorder": link, "contrastActiveBorder": link,
+            "focusBorder": focus, "contrastActiveBorder": focus, "list.focusOutline": focus,
             "foreground": p["text"], "descriptionForeground": p["muted"], "disabledForeground": p["muted"],
             "icon.foreground": p["text"], "errorForeground": p["error"], "widget.border": p["border"],
             "button.background": btn, "button.foreground": btn_fg,
@@ -204,10 +223,6 @@ def theme(name, p):
                 "variable.object.property", "meta.object-literal.key string"], p.get("property", p["prop"])),
             tc(["keyword", "storage", "storage.type", "storage.modifier", "keyword.operator.new",
                 "keyword.operator.expression", "keyword.control", "variable.language.this"], p["keyword"], "italic"),
-            tc(["keyword.control.anchor.regexp", "keyword.operator.quantifier.regexp",
-                "keyword.operator.or.regexp", "keyword.operator.negation.regexp",
-                "punctuation.definition.group.regexp", "punctuation.definition.character-class.regexp",
-                "punctuation.definition.group.assertion.regexp", "keyword.operator.lookahead.regexp"], p["punct"], ""),
             tc(["variable.other.readwrite", "variable.other.constant", "variable.other.object",
                 "meta.object-binding-pattern-variable variable.object.property"], p["local"]),
             tc(["variable.parameter", "meta.parameters variable", "meta.parameters meta.object-binding-pattern-variable variable"], p["param"]),
@@ -233,6 +248,12 @@ def theme(name, p):
             *([tc(["string.regexp", "constant.character.escape", "constant.other.character-class.regexp",
                    "constant.character.character-class.regexp", "constant.other.character-class.set.regexp"],
                   p["regex"])] if "regex" in p else []),
+            tc(["keyword.control.anchor.regexp", "keyword.operator.quantifier.regexp",
+                "keyword.operator.or.regexp", "keyword.operator.negation.regexp",
+                "punctuation.definition.group.regexp", "punctuation.definition.character-class.regexp",
+                "punctuation.definition.group.assertion.regexp", "keyword.operator.lookahead.regexp"],
+               p["regex"] if p.get("regex_symbols") else p["punct"], ""),
+            *([tc(["variable.language.this"], p["this"], "italic")] if "this" in p else []),
             tc(["markup.heading", "entity.name.section"], link, "bold"),
             tc(["markup.inline.raw", "markup.fenced_code"], p["type_"]),
         ],
@@ -278,6 +299,9 @@ def check(name, t):
     for fg, bg in pairs:
         if fg in c and bg in c and contrast(solid(fg), solid(bg)) < 4.5:
             bad.append(f"{fg} on {bg}: {contrast(solid(fg), solid(bg)):.2f}")
+    for bg in ("editor.background", "sideBar.background", "input.background"):
+        if contrast(solid("focusBorder"), solid(bg)) < 3:
+            bad.append(f"focusBorder on {bg}: {contrast(solid('focusBorder'), solid(bg)):.2f} (needs 3:1)")
     bgs = [t["colors"]["editor.background"], t["colors"]["editor.lineHighlightBackground"], t["colors"]["sideBar.background"]]
     for tok in t["tokenColors"]:
         fg = tok["settings"]["foreground"]

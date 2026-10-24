@@ -30,8 +30,9 @@
     "panel.border": "#363d49",
     "terminal.background": "#20252d",
     "terminal.foreground": "#d5dce5",
-    "focusBorder": "#58a6ff",
-    "contrastActiveBorder": "#58a6ff",
+    "focusBorder": "#2f7d6b",
+    "contrastActiveBorder": "#2f7d6b",
+    "list.focusOutline": "#2f7d6b",
     "foreground": "#d5dce5",
     "descriptionForeground": "#9aa5b8",
     "disabledForeground": "#9aa5b8",
@@ -138,7 +139,7 @@
     "editorInfo.foreground": "#58a6ff",
     "editorHint.foreground": "#9aa5b8",
     "editorGutter.addedBackground": "#5cc0a6",
-    "editorGutter.modifiedBackground": "#d8b77a",
+    "editorGutter.modifiedBackground": "#c9a0dc",
     "editorGutter.deletedBackground": "#ff8a80",
     "editor.findMatchBackground": "#79673a",
     "editor.findMatchHighlightBackground": "#514a34",
@@ -147,7 +148,7 @@
     "editorLink.activeForeground": "#58a6ff",
     "gitDecoration.addedResourceForeground": "#5cc0a6",
     "gitDecoration.untrackedResourceForeground": "#5cc0a6",
-    "gitDecoration.modifiedResourceForeground": "#d8b77a",
+    "gitDecoration.modifiedResourceForeground": "#c9a0dc",
     "gitDecoration.deletedResourceForeground": "#ff8a80",
     "gitDecoration.conflictingResourceForeground": "#e5b84b",
     "gitDecoration.ignoredResourceForeground": "#9aa5b8",
@@ -234,22 +235,6 @@
       "settings": {
         "foreground": "#ff9b75",
         "fontStyle": "italic"
-      }
-    },
-    {
-      "scope": [
-        "keyword.control.anchor.regexp",
-        "keyword.operator.quantifier.regexp",
-        "keyword.operator.or.regexp",
-        "keyword.operator.negation.regexp",
-        "punctuation.definition.group.regexp",
-        "punctuation.definition.character-class.regexp",
-        "punctuation.definition.group.assertion.regexp",
-        "keyword.operator.lookahead.regexp"
-      ],
-      "settings": {
-        "foreground": "#d5dce5",
-        "fontStyle": ""
       }
     },
     {
@@ -404,6 +389,22 @@
       ],
       "settings": {
         "foreground": "#b5d989"
+      }
+    },
+    {
+      "scope": [
+        "keyword.control.anchor.regexp",
+        "keyword.operator.quantifier.regexp",
+        "keyword.operator.or.regexp",
+        "keyword.operator.negation.regexp",
+        "punctuation.definition.group.regexp",
+        "punctuation.definition.character-class.regexp",
+        "punctuation.definition.group.assertion.regexp",
+        "keyword.operator.lookahead.regexp"
+      ],
+      "settings": {
+        "foreground": "#d5dce5",
+        "fontStyle": ""
       }
     },
     {

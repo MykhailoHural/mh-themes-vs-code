@@ -14,9 +14,9 @@
   "contributes": {
     "themes": [
       {
-        "label": "MH Dusk",
+        "label": "MH Aurora",
         "uiTheme": "vs-dark",
-        "path": "./themes/dusk.json"
+        "path": "./themes/aurora.json"
       },
       {
         "label": "MH Graphite",
@@ -37,6 +37,16 @@
         "label": "MH Sunlight",
         "uiTheme": "vs",
         "path": "./themes/light.json"
+      },
+      {
+        "label": "MH Porcelain",
+        "uiTheme": "vs-dark",
+        "path": "./themes/porcelain.json"
+      },
+      {
+        "label": "MH Dark+",
+        "uiTheme": "vs-dark",
+        "path": "./themes/dark-plus.json"
       }
     ]
   },
